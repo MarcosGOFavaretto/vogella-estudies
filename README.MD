@@ -130,11 +130,24 @@ class Application {
         double resultWithAnonymousClass = calcWithAnonymousClass.calculate(num1, num2);
         double resultWithLambda = calcWithLamba.calculate(num1, num2);
 
-        System.out.println("The sum between " + num1 + " and " + num2 + " is :");
+        System.out.println("The sum between " + num1 + " and " + num2 + " is:");
         System.out.println("Anonymous Class: " + resultWithAnonymousClass);
         System.out.println("Lamba: " + resultWithLambda);
     }
 }
+```
+
+For run that code, we can use the following commands at the location of `Application.java` file.
+
+```
+javac Application.java; java Application 1 1
+```
+
+After run it, the result showed at terminal is:
+```
+The sum between 1.0 and 1.0 is:
+Anonymous Class: 2.0
+Lamba: 2.0
 ```
 
 Notice that the implementation maded for `calcWithAnonymousClass` needed of much more lines to make the same thing as `calcWithLamba`.
