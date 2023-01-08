@@ -153,3 +153,148 @@ Lamba: 2.0
 Notice that the implementation maded for `calcWithAnonymousClass` needed of much more lines to make the same thing as `calcWithLamba`.
 
 That topic needed of some searches to be completed: [Marcelo Carvalho post](https://medium.com/@mvalho/java-8-functional-interfaces-tornando-o-java-mais-legal-72401462d0e2), [Oracle Documentation](https://docs.oracle.com/javase/8/docs/api/java/lang/FunctionalInterface.html) and [Pankaj post on Digital Ocean](https://www.digitalocean.com/community/tutorials/java-8-functional-interfaces).
+
+### 19.2. [String Pool](https://www.vogella.com/tutorials/JavaIntroduction/article.html#javastringpool)
+
+Strings in Java are immutable. It means that its value once declared cannot be changed anymore. The String variables just stores references to the String value on Heap memory, and it can be changed, like we used to do during the execution of our program.
+
+When a literal String is declared, it is saved on a specific local of the Heap memory: the `String Pool`.
+
+To clarify it better, let's declare a new String variable on our Java class.
+
+```java
+public class Application {
+    public static void main(String[] args) {
+        String myFirstString = "Hello";
+    }
+}
+```
+
+When we declare a String variable and initialize it with the literal way, that is what happen at the memory allocated to our application.
+
+<Line1>
+
+Declaring another String variable using the same literal attribution, another local on String Pool won't be created, since the JVM knows that there already exists a String value declared as `Hello`.
+
+**Code**
+```java
+public class Application {
+    public static void main(String[] args) {
+        String myFirstString = "Hello";
+        String mySecondString = "Hello";
+    }
+}
+```
+
+If we look at memory:
+
+<Line2>
+
+At the beginning, the String Pool is empty. After declaring the `myFisrtString`, JVM looks inside it and search for the value "Hello". If it still doesn't exist, JVM stores that value and return the address. If already exists, returns the address of the value.
+
+To make sure that `myFirstString` and `mySecondString` are appointing to the same local of memory, we can compare them with the `==` operator, which returns true if they have the same address.
+
+**Code**
+```java
+public class Application {
+    public static void main(String[] args) {
+        String myFirstString = "Hello";
+        String mySecondString = "Hello";
+
+        System.out.println("Has same address: " + (myFirstString == mySecondString));
+    }
+}
+```
+
+**Result**
+```
+Has same address: true
+```
+
+If we change both values, the `Hello` will not be removed from memory, it just will not have a pointer with its address, and another allocation on String Pool will be created, having the new declared value.
+
+**Code**
+```java
+public class Application {
+    public static void main(String[] args) {
+        String myFirstString = "Hello";
+        String mySecondString = "Hello";
+
+        myFirstString = "World";
+        mySecondString = "World";
+
+        System.out.println("Has same address: " + (myFirstString == mySecondString));
+        System.out.println("Has same address as \"Hello\" value: " + (myFirstString == "Hello"));
+    }
+}
+```
+
+**Result**
+```
+Has same address: true
+Has same address as "Hello" value: false
+```
+
+**Memory Representation**
+<Line3>
+
+There we can see the immutable propriety, since the value stored did not change after an alteration of variables's value attribution, and other local on String Pool was occupied with the new value.
+
+It is important to say that if we declare a String variable with the `new` keyword, that value will not be created at String Pool, instead of it, will be saved at Heap Space every time a String is declared with the `new` keyword.
+
+**Code**
+```java
+public class Application {
+    public static void main(String[] args) {
+        String myLiteralString = "Hello";
+        String myNewString = new String("Hello");
+
+        System.out.println("Has same address: " + (myLiteralString == myNewString));
+    }
+}
+```
+
+**Result**
+```
+Has same address: false
+```
+
+**Memory Representation**
+<Line4>
+
+To allocate that value on String Pool, we can manually use the `String.intern()` method. Despite this, a new allocation will be made, however, still within the String Pool.
+
+**Code**
+```java
+public class Application {
+    public static void main(String[] args) {
+        String myLiteralString = "Hello";
+        String myNewString = new String("Hello");
+
+        System.out.println("Has same address: " + (myLiteralString == myNewString));
+
+        myNewString = myNewString.intern();
+        System.out.println("Has same address after intern: " + (myLiteralString == myNewString));
+    }
+}
+```
+
+**Result**
+```
+Has same address: false
+Has same address after intern: true
+```
+
+**Memory Representation**
+<Line5>
+
+#### Advantages
+- The use of String Pool improves the performance of our application, since it works as a cache, allowing the JVM to also spend less memory.
+- Allows reusability of String values.
+
+#### Disadvantages
+- Every time a String is changed, another value will be allocated in memory, and the old value will be still existing, using unnecessary space. When working with some String variable that changes a lot, that can be a memory problem.
+
+It is possible to use Strings on a mutable way through Java `StringBuilders`. Using that resource, the String value will not be stored on String Pool and the allocated value will be changed at the same address, not being reallocated.
+
+That topic about String Pool is based on [Scaler](https://www.scaler.com/topics/java/string-pool-in-java/), [Baeldung](https://www.baeldung.com/java-string-pool), [Coding with John](https://www.youtube.com/watch?v=Bj9Mx_Lx3q4) and [Vogella](https://www.vogella.com/tutorials/JavaIntroduction/article.html#javastringpool).
