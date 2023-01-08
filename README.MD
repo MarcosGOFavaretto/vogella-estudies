@@ -172,7 +172,7 @@ public class Application {
 
 When we declare a String variable and initialize it with the literal way, that is what happen at the memory allocated to our application.
 
-<Line1>
+![Line1](https://user-images.githubusercontent.com/71560285/211213239-0c6494ba-df89-442d-8460-0f3685979a52.png)
 
 Declaring another String variable using the same literal attribution, another local on String Pool won't be created, since the JVM knows that there already exists a String value declared as `Hello`.
 
@@ -188,9 +188,9 @@ public class Application {
 
 If we look at memory:
 
-<Line2>
+![Line2](https://user-images.githubusercontent.com/71560285/211213463-f14388ea-88ed-46d7-acff-c81c07ee075b.png)
 
-At the beginning, the String Pool is empty. After declaring the `myFisrtString`, JVM looks inside it and search for the value "Hello". If it still doesn't exist, JVM stores that value and return the address. If already exists, returns the address of the value.
+At the beginning, the String Pool is empty. After declaring the `myFirstString`, JVM looks inside it and search for the value "Hello". If it still doesn't exist, JVM stores that value and return the address. If already exists, returns the address of the value.
 
 To make sure that `myFirstString` and `mySecondString` are appointing to the same local of memory, we can compare them with the `==` operator, which returns true if they have the same address.
 
@@ -236,7 +236,8 @@ Has same address as "Hello" value: false
 ```
 
 **Memory Representation**
-<Line3>
+
+![Line3](https://user-images.githubusercontent.com/71560285/211213258-32b92f42-baf2-4ce0-8be3-9bfd9f13df38.png)
 
 There we can see the immutable propriety, since the value stored did not change after an alteration of variables's value attribution, and other local on String Pool was occupied with the new value.
 
@@ -260,9 +261,10 @@ Has same address: false
 ```
 
 **Memory Representation**
-<Line4>
 
-To allocate that value on String Pool, we can manually use the `String.intern()` method. Despite this, a new allocation will be made, however, still within the String Pool.
+![Line4](https://user-images.githubusercontent.com/71560285/211213264-93b03eb4-6bb3-46f7-8293-db27d6e7c482.png)
+
+To allocate that value on String Pool, we can manually use the `String.intern()` method.
 
 **Code**
 ```java
@@ -286,7 +288,8 @@ Has same address after intern: true
 ```
 
 **Memory Representation**
-<Line5>
+
+![Line5](https://user-images.githubusercontent.com/71560285/211213273-fe89dc92-e5e9-41cc-8c16-6a74ddf2ae3f.png)
 
 #### Advantages
 - The use of String Pool improves the performance of our application, since it works as a cache, allowing the JVM to also spend less memory.
